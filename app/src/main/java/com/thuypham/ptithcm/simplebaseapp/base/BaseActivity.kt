@@ -68,7 +68,7 @@ abstract class BaseActivity<T : ViewDataBinding>(private val layoutId: Int) : Ap
         dialog.show()
     }
 
-    fun showLoadingStatus(isLoading: Boolean) {
+    fun setLoadingStatus(isLoading: Boolean) {
         if (isLoading) {
             showLoading()
         } else {

@@ -4,5 +4,5 @@ import com.thuypham.ptithcm.simplebaseapp.domain.usecase.movie.GetNowPlayingUseC
 import org.koin.dsl.module
 
 val useCaseModule = module {
-    single { GetNowPlayingUseCase(get()) }
+    factory { GetNowPlayingUseCase(get()) }
 }

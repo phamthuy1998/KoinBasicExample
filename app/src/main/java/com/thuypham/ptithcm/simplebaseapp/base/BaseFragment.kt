@@ -2,7 +2,6 @@ package com.thuypham.ptithcm.simplebaseapp.base
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +33,7 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        logD( "onViewCreated")
+        logD("onViewCreated")
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
@@ -50,15 +49,15 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
     open fun setupLogic() {}
     open fun getData() {}
     open fun setupToolbar() {}
-    abstract fun setupView()
+    open fun setupView() {}
     open fun setupDataObserver() {}
 
-    fun showLoading() {
+    fun setLoadingStatus() {
         (requireActivity() as BaseActivity<*>).showLoading()
     }
 
-    fun showLoading(isLoading: Boolean) {
-        (requireActivity() as BaseActivity<*>).showLoadingStatus(isLoading)
+    fun setLoadingStatus(isLoading: Boolean) {
+        (requireActivity() as BaseActivity<*>).setLoadingStatus(isLoading)
     }
 
     fun hideLoading() {
@@ -66,15 +65,16 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
     }
 
     fun setToolbarTitle(title: String, onClick: ((View) -> Unit?)? = null) {
-        binding.root.findViewById<AppCompatTextView>(R.id.tvTitle).apply {
+        binding.root.findViewById<AppCompatTextView>(R.id.tvTitle)?.apply {
             show()
             text = title
+            isSelected = true
             setOnSingleClickListener { onClick?.invoke(this) }
         }
     }
 
     fun setToolbarTitle(titleRes: Int, onClick: ((View) -> Unit?)? = null) {
-        binding.root.findViewById<AppCompatTextView>(R.id.tvTitle).apply {
+        binding.root.findViewById<AppCompatTextView>(R.id.tvTitle)?.apply {
             show()
             text = getString(titleRes)
             setOnSingleClickListener { onClick?.invoke(this) }
@@ -82,7 +82,7 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
     }
 
     fun setLeftBtn(iconResID: Int, onClick: ((View) -> Unit?)? = null) {
-        binding.root.findViewById<AppCompatImageView>(R.id.ivLeft).apply {
+        binding.root.findViewById<AppCompatImageView>(R.id.ivLeft)?.apply {
             show()
             setImageResource(iconResID)
             setOnSingleClickListener { onClick?.invoke(this) }
@@ -90,7 +90,7 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
     }
 
     fun setRightBtn(iconResID: Int, onClick: ((View) -> Unit?)? = null) {
-        binding.root.findViewById<AppCompatImageView>(R.id.ivRight).apply {
+        binding.root.findViewById<AppCompatImageView>(R.id.ivRight)?.apply {
             show()
             setImageResource(iconResID)
             setOnSingleClickListener { onClick?.invoke(this) }
@@ -98,7 +98,7 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
     }
 
     fun setSubRightBtn(iconResID: Int, onClick: ((View) -> Unit?)? = null) {
-        binding.root.findViewById<AppCompatImageView>(R.id.ivSubRight).apply {
+        binding.root.findViewById<AppCompatImageView>(R.id.ivSubRight)?.apply {
             show()
             setImageResource(iconResID)
             setOnSingleClickListener { onClick?.invoke(this) }
@@ -106,7 +106,7 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
     }
 
     fun setSubRight2Btn(iconResID: Int, onClick: ((View) -> Unit?)? = null) {
-        binding.root.findViewById<AppCompatImageView>(R.id.ivSubRight2).apply {
+        binding.root.findViewById<AppCompatImageView>(R.id.ivSubRight2)?.apply {
             show()
             setImageResource(iconResID)
             setOnSingleClickListener { onClick?.invoke(this) }
@@ -159,7 +159,7 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        logD( "onCreate")
+        logD("onCreate")
     }
 
     override fun onStart() {

@@ -6,7 +6,6 @@ import com.thuypham.ptithcm.simplebaseapp.R
 import com.thuypham.ptithcm.simplebaseapp.base.BaseActivity
 import com.thuypham.ptithcm.simplebaseapp.databinding.ActivityNoNetworkBinding
 import com.thuypham.ptithcm.simplebaseapp.extension.isNetworkConnected
-import com.thuypham.ptithcm.simplebaseapp.extension.setOnSingleClickListener
 
 class NoNetworkActivity : BaseActivity<ActivityNoNetworkBinding>(R.layout.activity_no_network) {
 
@@ -32,7 +31,9 @@ class NoNetworkActivity : BaseActivity<ActivityNoNetworkBinding>(R.layout.activi
     }
 
     override fun onBackPressed() {
-
+        if (isNetworkConnected()) {
+            super.onBackPressed()
+        }
     }
 
     override fun onDestroy() {

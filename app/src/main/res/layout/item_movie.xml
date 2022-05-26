@@ -4,25 +4,27 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivMovie"
             android:layout_width="100dp"
-            tools:src="@tools:sample/avatars"
             android:layout_height="100dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            tools:src="@tools:sample/avatars" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginHorizontal="8dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:maxLines="2"
                 android:textColor="@color/black"
                 android:textStyle="bold"
@@ -34,7 +36,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:ellipsize="end"
-                android:maxLines="4"
+                android:maxLines="3"
                 tools:text="Description" />
         </LinearLayout>
 

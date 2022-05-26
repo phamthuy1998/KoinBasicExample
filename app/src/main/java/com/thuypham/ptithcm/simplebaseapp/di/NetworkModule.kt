@@ -9,6 +9,7 @@ import com.thuypham.ptithcm.simplebaseapp.util.ApiConstant
 import com.thuypham.ptithcm.simplebaseapp.util.Constant
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -18,8 +19,11 @@ import java.util.concurrent.TimeUnit
 val networkModule = module {
     single { provideGson() }
     single { provideClient(get()) }
-    factory { createService(get(), MovieApi::class.java) }
-    factory { provideRetrofit(get()) }
+    single { createService(get(), MovieApi::class.java) }
+    single { provideRetrofit(get()) }
+
+    // Another way
+//    factoryOf(::provideRetrofit)
 
 //    factory { createService(get(named(Constant.MAIN_API)), MovieApi::class.java) }
 //    scope<MovieApi> {

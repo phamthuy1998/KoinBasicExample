@@ -7,7 +7,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val databaseModule = module {
-    single { AppDatabase.getInstance(androidContext()) }
-    single<IStorage> { SharedPreferencesStorage(androidContext()) }
-    single { SharedPreferencesStorage(androidContext()) }
+    single { AppDatabase.getInstance(get()) }
+
+//    single<IStorage> { SharedPreferencesStorage(androidContext()) }
+    single<IStorage> { SharedPreferencesStorage(get()) }
 }
