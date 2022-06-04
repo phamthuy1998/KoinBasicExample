@@ -49,10 +49,10 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
     open fun setupLogic() {}
     open fun getData() {}
     open fun setupToolbar() {}
-    open fun setupView() {}
+    abstract fun setupView()
     open fun setupDataObserver() {}
 
-    fun setLoadingStatus() {
+    fun showLoading() {
         (requireActivity() as BaseActivity<*>).showLoading()
     }
 
@@ -133,6 +133,7 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
     }
 
     fun showSnackBar(message: String?) {
+        if (message.isNullOrBlank()) return
         runOnUiThread(Runnable {
             if (view != null) {
                 val snackBar = Snackbar.make(

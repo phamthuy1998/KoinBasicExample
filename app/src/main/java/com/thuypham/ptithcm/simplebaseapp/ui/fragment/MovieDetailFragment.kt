@@ -6,12 +6,14 @@ import com.thuypham.ptithcm.simplebaseapp.base.BaseFragment
 import com.thuypham.ptithcm.simplebaseapp.data.remote.Movie
 import com.thuypham.ptithcm.simplebaseapp.databinding.FragmentMovieDetailBinding
 import com.thuypham.ptithcm.simplebaseapp.extension.goBack
+import com.thuypham.ptithcm.simplebaseapp.extension.logD
 import com.thuypham.ptithcm.simplebaseapp.viewmodel.MovieDetailViewModel
 import org.koin.androidx.navigation.koinNavGraphViewModel
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>(R.layout.fragment_movie_detail) {
 
-    private val detailMovieViewModel: MovieDetailViewModel by koinNavGraphViewModel(R.id.main_nav)
+    private val detailMovieViewModel: MovieDetailViewModel  by koinNavGraphViewModel(R.id.main_graph)
 
     override fun setupToolbar() {
         setLeftBtn(R.drawable.ic_back) {
@@ -37,8 +39,13 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>(R.layout.fr
     override fun setupDataObserver() {
         super.setupDataObserver()
         detailMovieViewModel.movieDetail.observe(viewLifecycleOwner) { movie ->
+            logD("setupDataObserver-movieDetail")
             setupView(movie)
         }
+    }
+
+    override fun setupView() {
+
     }
 
 }

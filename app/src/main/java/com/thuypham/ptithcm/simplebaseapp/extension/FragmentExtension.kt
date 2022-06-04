@@ -5,6 +5,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
+import androidx.navigation.NavGraph
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.thuypham.ptithcm.simplebaseapp.extension.shareImageToOtherApp

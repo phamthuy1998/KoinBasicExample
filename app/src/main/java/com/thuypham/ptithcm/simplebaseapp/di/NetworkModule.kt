@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 
 val networkModule = module {
     single { provideGson() }
-    single { provideClient(get()) }
+    single { provideClient() }
     single { createService(get(), MovieApi::class.java) }
     single { provideRetrofit(get()) }
 
@@ -46,7 +46,7 @@ fun provideRetrofit(client: OkHttpClient): Retrofit {
         .build()
 }
 
-fun provideClient(context: Context): OkHttpClient {
+fun provideClient(): OkHttpClient {
     val builder =
         OkHttpClient.Builder()
             .callTimeout(Constant.CONNECTION_TIME_OUT_SECOND, TimeUnit.SECONDS)

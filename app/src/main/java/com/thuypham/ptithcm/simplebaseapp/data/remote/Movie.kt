@@ -1,10 +1,10 @@
 package com.thuypham.ptithcm.simplebaseapp.data.remote
 
 
-import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import com.thuypham.ptithcm.simplebaseapp.util.ApiConstant
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Movie(
@@ -36,7 +36,7 @@ data class Movie(
     var voteAverage: Double?,
     @SerializedName("vote_count")
     var voteCount: Int?
-) : Parcelable{
+) : Parcelable {
 
     fun getImagePath() = ApiConstant.IMAGE_URL.format(posterPath)
 }

@@ -10,7 +10,9 @@ sealed class AppException : Exception() {
     object NotFound: AppException()
     object BridgeNotFound: AppException()
     object Unknown: AppException()
+    object NullPoint: AppException()
     object FirebaseException: AppException()
     object RetryConnectBridge: AppException()
     object ConnectException: AppException()
+    object TimeOut: AppException()
 }

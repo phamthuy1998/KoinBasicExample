@@ -1,12 +1,17 @@
 package com.thuypham.ptithcm.simplebaseapp.api
 
+import android.util.Log
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.thuypham.ptithcm.simplebaseapp.data.model.AppException
 import com.thuypham.ptithcm.simplebaseapp.data.model.ResponseHandler
+import com.thuypham.ptithcm.simplebaseapp.data.remote.ErrorResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import retrofit2.Response
 import java.net.ConnectException
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 
@@ -18,14 +23,25 @@ suspend inline fun <reified T> wrapApiCall(
             api()
         }
         when (response.code()) {
+            // 401 for receive login fail response
             200 -> {
-                ResponseHandler.Success(response.body()!!)
+                if (response.body() != null) {
+                    ResponseHandler.Success(response.body()!!)
+                } else {
+                    ResponseHandler.Failure(AppException.NullPoint)
+                }
             }
             else -> {
-                ResponseHandler.Failure(AppException.Unknown)
+                // Get Error response
+                val gson = Gson()
+                val type = object : TypeToken<ErrorResponse>() {}.type
+                val errorResponse: ErrorResponse? = gson.fromJson(response.errorBody()?.charStream(), type)
+
+                ResponseHandler.Failure(AppException.Unknown, errorResponse = errorResponse)
             }
         }
     } catch (exp: Exception) {
+        Log.e("wrapApiCall", "Error: ${exp.printStackTrace()}")
         return when (exp) {
             is HttpException -> {
                 ResponseHandler.Failure(AppException.NoNetwork)
@@ -35,6 +51,9 @@ suspend inline fun <reified T> wrapApiCall(
             }
             is ConnectException -> {
                 ResponseHandler.Failure(AppException.ConnectException)
+            }
+            is SocketTimeoutException -> {
+                ResponseHandler.Failure(AppException.TimeOut)
             }
             else -> {
                 ResponseHandler.Failure(exp)

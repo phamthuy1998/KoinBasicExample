@@ -1,5 +1,6 @@
 package com.thuypham.ptithcm.simplebaseapp.di
 
+import com.google.gson.Gson
 import com.thuypham.ptithcm.simplebaseapp.data.local.AppDatabase
 import com.thuypham.ptithcm.simplebaseapp.data.local.IStorage
 import com.thuypham.ptithcm.simplebaseapp.data.local.SharedPreferencesStorage
@@ -10,5 +11,6 @@ val databaseModule = module {
     single { AppDatabase.getInstance(get()) }
 
 //    single<IStorage> { SharedPreferencesStorage(androidContext()) }
-    single<IStorage> { SharedPreferencesStorage(get()) }
+    single { Gson() }
+    single<IStorage> { SharedPreferencesStorage(get(), get()) }
 }

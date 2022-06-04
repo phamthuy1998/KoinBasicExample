@@ -1,24 +1,33 @@
 package com.thuypham.ptithcm.simplebaseapp.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.thuypham.ptithcm.simplebaseapp.base.BaseViewModel
+import com.thuypham.ptithcm.simplebaseapp.data.local.IStorage
+import com.thuypham.ptithcm.simplebaseapp.data.local.SharedPreferencesStorage
 import com.thuypham.ptithcm.simplebaseapp.data.model.ResponseHandler
 import com.thuypham.ptithcm.simplebaseapp.data.remote.Movie
 import com.thuypham.ptithcm.simplebaseapp.domain.usecase.movie.GetNowPlayingUseCase
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val getNowPlayingUseCase: GetNowPlayingUseCase
+    private val getNowPlayingUseCase: GetNowPlayingUseCase,
+    private val sharedPrf: IStorage
 ) : BaseViewModel() {
 
     private val _movieList = MutableLiveData<ArrayList<Movie?>?>()
-    val movieList = _movieList
+    val movieList: LiveData<ArrayList<Movie?>?> = _movieList
 
     private val movieListItems: ArrayList<Movie?> = arrayListOf()
 
     private val _loadMoreAble = MutableLiveData<Boolean>()
-    val loadMoreAble = _loadMoreAble
+    val loadMoreAble: LiveData<Boolean> = _loadMoreAble
+
+
+    private val _isLogin = MutableLiveData<Boolean>()
+    val isLogin: LiveData<Boolean> = _loadMoreAble
+
     private var currentPage = 0
 
     fun getMovieNowPlaying() = viewModelScope.launch {
@@ -47,7 +56,7 @@ class MainViewModel(
                 }
             }
             is ResponseHandler.Failure -> {
-                error.value = result
+                _error.value = result
                 movieListItems.removeLast()
 
             }
@@ -61,5 +70,11 @@ class MainViewModel(
         }
     }
 
+
+    fun isUserLogin(): Boolean {
+        val isLogin = sharedPrf.getObject(SharedPreferencesStorage.LOGIN_DATA) != null
+        _isLogin.value = isLogin
+        return isLogin
+    }
 
 }

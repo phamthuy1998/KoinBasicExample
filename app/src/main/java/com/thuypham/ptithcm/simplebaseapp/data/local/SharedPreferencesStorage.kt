@@ -1,8 +1,9 @@
 package com.thuypham.ptithcm.simplebaseapp.data.local
 
 import android.content.Context
+import com.google.gson.Gson
 
-class SharedPreferencesStorage constructor(context: Context) : IStorage {
+class SharedPreferencesStorage constructor(context: Context, private val gson: Gson) : IStorage {
 
     private val sharedPreferences = context.getSharedPreferences(
         APP_PREF,
@@ -55,9 +56,24 @@ class SharedPreferencesStorage constructor(context: Context) : IStorage {
     override fun getStringSet(key: String) =
         sharedPreferences.getStringSet(key, emptySet()) as Set<String>
 
+    override fun setObject(key: String, obj: Any) {
+        setString(key, gson.toJson(obj))
+    }
+
+    override fun getObject(key: String): Any? {
+        val objString = sharedPreferences.getString(key, "")
+        return try {
+            gson.fromJson(objString, Any::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     companion object {
         const val APP_PREF = "KoinBasic"
         const val PREF_CURRENT_LANGUAGE = "current_language"
+        const val LOGIN_DATA = "LOGIN_DATA"
+        const val LOGIN_RESPONSE = "LOGIN_RESPONSE"
     }
 }
 
@@ -72,4 +88,7 @@ interface IStorage {
     fun getLong(key: String, def: Long = -1L): Long
     fun setStringSet(key: String, set: Set<String>)
     fun getStringSet(key: String): Set<String>
+
+    fun setObject(key: String, obj: Any)
+    fun getObject(key: String): Any?
 }
