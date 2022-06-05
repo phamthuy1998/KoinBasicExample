@@ -14,11 +14,15 @@ import com.thuypham.ptithcm.simplebaseapp.data.model.ResponseHandler
 import com.thuypham.ptithcm.simplebaseapp.data.remote.LoginResponse
 import com.thuypham.ptithcm.simplebaseapp.domain.usecase.authentication.GetNewTokenUseCase
 import com.thuypham.ptithcm.simplebaseapp.domain.usecase.authentication.LoginUseCase
-import com.thuypham.ptithcm.simplebaseapp.extension.logD
+import dagger.assisted.Assisted
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel(
-    savedStateHandle: SavedStateHandle,
+
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val loginUseCase: LoginUseCase,
     private val getNewTokenUseCase: GetNewTokenUseCase,
     private val sharedPrf: IStorage,

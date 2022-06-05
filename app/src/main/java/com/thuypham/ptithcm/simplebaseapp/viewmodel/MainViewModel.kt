@@ -9,9 +9,12 @@ import com.thuypham.ptithcm.simplebaseapp.data.local.SharedPreferencesStorage
 import com.thuypham.ptithcm.simplebaseapp.data.model.ResponseHandler
 import com.thuypham.ptithcm.simplebaseapp.data.remote.Movie
 import com.thuypham.ptithcm.simplebaseapp.domain.usecase.movie.GetNowPlayingUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val getNowPlayingUseCase: GetNowPlayingUseCase,
     private val sharedPrf: IStorage
 ) : BaseViewModel() {

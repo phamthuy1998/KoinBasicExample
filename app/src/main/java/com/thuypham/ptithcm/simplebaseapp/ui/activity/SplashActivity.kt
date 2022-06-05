@@ -6,7 +6,9 @@ import android.content.Intent
 import com.thuypham.ptithcm.simplebaseapp.R
 import com.thuypham.ptithcm.simplebaseapp.base.BaseActivity
 import com.thuypham.ptithcm.simplebaseapp.databinding.ActivitySplashBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_splash) {
 

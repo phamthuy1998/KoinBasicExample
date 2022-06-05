@@ -1,6 +1,7 @@
 package com.thuypham.ptithcm.simplebaseapp.ui.fragment
 
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.viewModels
 import com.thuypham.ptithcm.simplebaseapp.R
 import com.thuypham.ptithcm.simplebaseapp.base.BaseFragment
 import com.thuypham.ptithcm.simplebaseapp.databinding.FragmentLoginBinding
@@ -8,23 +9,18 @@ import com.thuypham.ptithcm.simplebaseapp.extension.goBack
 import com.thuypham.ptithcm.simplebaseapp.extension.logD
 import com.thuypham.ptithcm.simplebaseapp.extension.setOnSingleClickListener
 import com.thuypham.ptithcm.simplebaseapp.viewmodel.LoginViewModel
-import org.koin.android.scope.AndroidScopeComponent
-import org.koin.androidx.scope.fragmentScope
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
-import org.koin.core.scope.Scope
+import dagger.hilt.android.AndroidEntryPoint
 
-/* For Testing stateViewModel injection */
-class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login), AndroidScopeComponent {
-
-    override  val scope: Scope by fragmentScope()
+@AndroidEntryPoint
+class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login) {
 
     // Test State ViewModel
-    private val loginViewModel: LoginViewModel by stateViewModel()
+    private val loginViewModel: LoginViewModel by viewModels()
 
     override fun setupToolbar() {
         super.setupToolbar()
-        setToolbarTitle(R.string.login)
-        setLeftBtn(R.drawable.ic_back) {
+        toolbarHelper.setToolbarTitle(R.string.login)
+        toolbarHelper.setLeftBtn(R.drawable.ic_back) {
             goBack()
         }
     }

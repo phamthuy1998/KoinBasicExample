@@ -6,14 +6,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.thuypham.ptithcm.simplebaseapp.data.local.dao.MovieDao
+import com.thuypham.ptithcm.simplebaseapp.data.local.entity.MovieEntity
 
 
 @Database(
-    entities = [],
+    entities = [MovieEntity::class],
     version = DatabaseMigrations.DB_VERSION
 )
-@TypeConverters(Converters::class)
+//@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
+    abstract fun getMovieDao(): MovieDao
 
     companion object {
         private const val DB_NAME = "App_Database"

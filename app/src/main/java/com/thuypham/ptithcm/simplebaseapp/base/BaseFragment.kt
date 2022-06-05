@@ -6,26 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
-import com.thuypham.ptithcm.simplebaseapp.R
 import com.thuypham.ptithcm.simplebaseapp.extension.logD
-import com.thuypham.ptithcm.simplebaseapp.extension.setOnSingleClickListener
-import com.thuypham.ptithcm.simplebaseapp.extension.show
+import com.thuypham.ptithcm.simplebaseapp.util.ToolbarHelper
 
 abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fragment() {
 
     lateinit var binding: T
+    protected val toolbarHelper by lazy { ToolbarHelper(binding.root) }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         logD("onCreateView")
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
         return binding.root
@@ -62,55 +55,6 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
 
     fun hideLoading() {
         (requireActivity() as BaseActivity<*>).hideLoading()
-    }
-
-    fun setToolbarTitle(title: String, onClick: ((View) -> Unit?)? = null) {
-        binding.root.findViewById<AppCompatTextView>(R.id.tvTitle)?.apply {
-            show()
-            text = title
-            isSelected = true
-            setOnSingleClickListener { onClick?.invoke(this) }
-        }
-    }
-
-    fun setToolbarTitle(titleRes: Int, onClick: ((View) -> Unit?)? = null) {
-        binding.root.findViewById<AppCompatTextView>(R.id.tvTitle)?.apply {
-            show()
-            text = getString(titleRes)
-            setOnSingleClickListener { onClick?.invoke(this) }
-        }
-    }
-
-    fun setLeftBtn(iconResID: Int, onClick: ((View) -> Unit?)? = null) {
-        binding.root.findViewById<AppCompatImageView>(R.id.ivLeft)?.apply {
-            show()
-            setImageResource(iconResID)
-            setOnSingleClickListener { onClick?.invoke(this) }
-        }
-    }
-
-    fun setRightBtn(iconResID: Int, onClick: ((View) -> Unit?)? = null) {
-        binding.root.findViewById<AppCompatImageView>(R.id.ivRight)?.apply {
-            show()
-            setImageResource(iconResID)
-            setOnSingleClickListener { onClick?.invoke(this) }
-        }
-    }
-
-    fun setSubRightBtn(iconResID: Int, onClick: ((View) -> Unit?)? = null) {
-        binding.root.findViewById<AppCompatImageView>(R.id.ivSubRight)?.apply {
-            show()
-            setImageResource(iconResID)
-            setOnSingleClickListener { onClick?.invoke(this) }
-        }
-    }
-
-    fun setSubRight2Btn(iconResID: Int, onClick: ((View) -> Unit?)? = null) {
-        binding.root.findViewById<AppCompatImageView>(R.id.ivSubRight2)?.apply {
-            show()
-            setImageResource(iconResID)
-            setOnSingleClickListener { onClick?.invoke(this) }
-        }
     }
 
     fun runOnUiThread(runnable: Runnable?) {

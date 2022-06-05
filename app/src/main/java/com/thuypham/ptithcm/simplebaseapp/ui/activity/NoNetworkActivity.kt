@@ -6,7 +6,9 @@ import com.thuypham.ptithcm.simplebaseapp.R
 import com.thuypham.ptithcm.simplebaseapp.base.BaseActivity
 import com.thuypham.ptithcm.simplebaseapp.databinding.ActivityNoNetworkBinding
 import com.thuypham.ptithcm.simplebaseapp.extension.isNetworkConnected
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NoNetworkActivity : BaseActivity<ActivityNoNetworkBinding>(R.layout.activity_no_network) {
 
     companion object {

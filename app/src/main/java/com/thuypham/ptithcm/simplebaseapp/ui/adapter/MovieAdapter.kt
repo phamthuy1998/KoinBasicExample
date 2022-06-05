@@ -46,12 +46,11 @@ class MovieAdapter(
         return when (viewType) {
             VIEW_TYPE_ITEM -> {
                 val binding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                ItemMovieViewHolder(binding)
-                    .apply {
-                        binding.root.setOnSingleClickListener {
-                            onItemClick?.invoke(currentList[absoluteAdapterPosition])
-                        }
+                ItemMovieViewHolder(binding).apply {
+                    binding.root.setOnSingleClickListener {
+                        onItemClick?.invoke(currentList[absoluteAdapterPosition])
                     }
+                }
             }
             else -> {
                 val binding = ItemLoadingBinding.inflate(LayoutInflater.from(parent.context), parent, false)

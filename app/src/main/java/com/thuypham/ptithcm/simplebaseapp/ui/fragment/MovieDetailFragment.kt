@@ -1,5 +1,6 @@
 package com.thuypham.ptithcm.simplebaseapp.ui.fragment
 
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.bumptech.glide.Glide
 import com.thuypham.ptithcm.simplebaseapp.R
 import com.thuypham.ptithcm.simplebaseapp.base.BaseFragment
@@ -8,21 +9,21 @@ import com.thuypham.ptithcm.simplebaseapp.databinding.FragmentMovieDetailBinding
 import com.thuypham.ptithcm.simplebaseapp.extension.goBack
 import com.thuypham.ptithcm.simplebaseapp.extension.logD
 import com.thuypham.ptithcm.simplebaseapp.viewmodel.MovieDetailViewModel
-import org.koin.androidx.navigation.koinNavGraphViewModel
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>(R.layout.fragment_movie_detail) {
 
-    private val detailMovieViewModel: MovieDetailViewModel  by koinNavGraphViewModel(R.id.main_graph)
+    private val detailMovieViewModel: MovieDetailViewModel by hiltNavGraphViewModels(R.id.main_graph)
 
     override fun setupToolbar() {
-        setLeftBtn(R.drawable.ic_back) {
+        toolbarHelper.setLeftBtn(R.drawable.ic_back) {
             goBack()
         }
     }
 
     private fun setupView(movie: Movie) {
-        setToolbarTitle(movie.title ?: "")
+        toolbarHelper.setToolbarTitle(movie.title ?: "")
 
         binding.apply {
 

@@ -1,7 +1,9 @@
 package com.thuypham.ptithcm.simplebaseapp.ui.fragment
 
 import android.widget.LinearLayout
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,30 +13,19 @@ import com.thuypham.ptithcm.simplebaseapp.data.model.AppException
 import com.thuypham.ptithcm.simplebaseapp.data.model.ResponseHandler
 import com.thuypham.ptithcm.simplebaseapp.data.remote.Movie
 import com.thuypham.ptithcm.simplebaseapp.databinding.FragmentMainBinding
-import com.thuypham.ptithcm.simplebaseapp.domain.usecase.authentication.GetNewTokenUseCase
-import com.thuypham.ptithcm.simplebaseapp.extension.getLoginScope
 import com.thuypham.ptithcm.simplebaseapp.extension.logE
 import com.thuypham.ptithcm.simplebaseapp.extension.navigateTo
 import com.thuypham.ptithcm.simplebaseapp.ui.adapter.MovieAdapter
 import com.thuypham.ptithcm.simplebaseapp.ui.dialog.ConfirmDialog
-import com.thuypham.ptithcm.simplebaseapp.viewmodel.LoginViewModel
 import com.thuypham.ptithcm.simplebaseapp.viewmodel.MainViewModel
 import com.thuypham.ptithcm.simplebaseapp.viewmodel.MovieDetailViewModel
-import kotlinx.coroutines.runBlocking
-import org.koin.android.scope.AndroidScopeComponent
-import org.koin.androidx.navigation.koinNavGraphViewModel
-import org.koin.androidx.scope.activityScope
-import org.koin.androidx.scope.fragmentScope
-import org.koin.androidx.scope.lifecycleScope
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.scope.Scope
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
-    private val mainViewModel: MainViewModel by viewModel()
-    private val detailMovieViewModel: MovieDetailViewModel by koinNavGraphViewModel(R.id.main_graph)
+    private val mainViewModel: MainViewModel by viewModels()
+    private val detailMovieViewModel: MovieDetailViewModel by hiltNavGraphViewModels(R.id.main_graph)
 
     private val movieAdapter: MovieAdapter by lazy {
         MovieAdapter { movie -> onMovieItemClick(movie) }
@@ -94,14 +85,14 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
 
     override fun setupToolbar() {
-        setToolbarTitle(getString(R.string.app_name))
+        toolbarHelper.setToolbarTitle(getString(R.string.app_name))
         val isLogin = mainViewModel.isUserLogin()
         if (!isLogin) {
-            setRightBtn(R.drawable.ic_login_account) {
+            toolbarHelper.setRightBtn(R.drawable.ic_login_account) {
                 navigateTo(R.id.authentication_graph)
             }
         } else {
-            setRightBtn(R.drawable.ic_account_setting) {
+            toolbarHelper.setRightBtn(R.drawable.ic_account_setting) {
                 // Todo: Navigate to account setting fragment
                 navigateTo(R.id.authentication_graph)
             }

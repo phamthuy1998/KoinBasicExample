@@ -2,8 +2,10 @@ package com.thuypham.ptithcm.simplebaseapp.data.local
 
 import android.content.Context
 import com.google.gson.Gson
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class SharedPreferencesStorage constructor(context: Context, private val gson: Gson) : IStorage {
+class SharedPreferencesStorage @Inject constructor(@ApplicationContext context: Context, private val gson: Gson) : IStorage {
 
     private val sharedPreferences = context.getSharedPreferences(
         APP_PREF,

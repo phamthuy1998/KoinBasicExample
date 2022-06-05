@@ -3,8 +3,11 @@ package com.thuypham.ptithcm.simplebaseapp.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.thuypham.ptithcm.simplebaseapp.base.BaseViewModel
 import com.thuypham.ptithcm.simplebaseapp.data.remote.Movie
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MovieDetailViewModel : BaseViewModel() {
+@HiltViewModel
+class MovieDetailViewModel @Inject constructor() : BaseViewModel() {
 
     private val _movieDetail = MutableLiveData<Movie>()
     val movieDetail = _movieDetail
