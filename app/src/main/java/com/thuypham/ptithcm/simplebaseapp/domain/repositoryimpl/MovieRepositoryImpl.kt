@@ -4,9 +4,13 @@ import com.thuypham.ptithcm.simplebaseapp.api.MovieApi
 import com.thuypham.ptithcm.simplebaseapp.api.wrapApiCall
 import com.thuypham.ptithcm.simplebaseapp.data.local.dao.MovieDao
 import com.thuypham.ptithcm.simplebaseapp.data.local.entity.MovieEntity
+import com.thuypham.ptithcm.simplebaseapp.data.local.entity.movieToMovieEntity
 import com.thuypham.ptithcm.simplebaseapp.data.model.ResponseHandler
+import com.thuypham.ptithcm.simplebaseapp.data.remote.Movie
 import com.thuypham.ptithcm.simplebaseapp.data.remote.MovieList
 import com.thuypham.ptithcm.simplebaseapp.domain.repository.MovieRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
@@ -23,7 +27,18 @@ class MovieRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getLocalNowPlaying(): ArrayList<MovieEntity> {
-        TODO("Not yet implemented")
+    override suspend fun getLocalNowPlaying(): List<MovieEntity>? {
+        return withContext(Dispatchers.IO) {
+            movieDao.getNowPlaying()
+        }
+    }
+
+    override suspend fun insertMovie(movies: List<Movie?>) {
+        withContext(Dispatchers.IO) {
+            movies.forEach {
+                val movieEntity = it?.movieToMovieEntity()
+                movieEntity?.let { movieDao.insertMovie(movieEntity) }
+            }
+        }
     }
 }

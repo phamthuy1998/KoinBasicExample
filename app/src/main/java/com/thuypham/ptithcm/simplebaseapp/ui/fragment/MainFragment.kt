@@ -3,7 +3,6 @@ package com.thuypham.ptithcm.simplebaseapp.ui.fragment
 import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
-import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +12,7 @@ import com.thuypham.ptithcm.simplebaseapp.data.model.AppException
 import com.thuypham.ptithcm.simplebaseapp.data.model.ResponseHandler
 import com.thuypham.ptithcm.simplebaseapp.data.remote.Movie
 import com.thuypham.ptithcm.simplebaseapp.databinding.FragmentMainBinding
+import com.thuypham.ptithcm.simplebaseapp.extension.isNetworkConnected
 import com.thuypham.ptithcm.simplebaseapp.extension.logE
 import com.thuypham.ptithcm.simplebaseapp.extension.navigateTo
 import com.thuypham.ptithcm.simplebaseapp.ui.adapter.MovieAdapter
@@ -34,6 +34,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     private var isMovieListLoadMore = false
     private var loadMoreAble = true
     private var movieItemLoadingPosition = 0
+    private val isNetworkOn by lazy { requireActivity().isNetworkConnected() }
 
     private fun onMovieItemClick(item: Movie) {
         // Pass data to detail ViewModel
@@ -43,7 +44,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     }
 
     override fun getData() {
-        mainViewModel.getMovieNowPlaying()
+        mainViewModel.getMovieNowPlaying(isNetworkOn)
     }
 
 
@@ -83,7 +84,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         ).show(childFragmentManager, ConfirmDialog.TAG)
     }
 
-
     override fun setupToolbar() {
         toolbarHelper.setToolbarTitle(getString(R.string.app_name))
         val isLogin = mainViewModel.isUserLogin()
@@ -105,19 +105,20 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             adapter = movieAdapter
 
             val recyclerViewLayoutManager = layoutManager as LinearLayoutManager
+
+            // Add Load more
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     movieItemLoadingPosition = recyclerViewLayoutManager.findLastCompletelyVisibleItemPosition()
-                    if (!isMovieListLoadMore && loadMoreAble
-                        && movieItemLoadingPosition == movieAdapter.itemCount - 4
-                    ) {
+                    if (!isMovieListLoadMore && loadMoreAble && movieItemLoadingPosition == movieAdapter.itemCount - 4 && isNetworkOn) {
                         isMovieListLoadMore = true
-                        mainViewModel.getMovieNowPlaying()
+                        getData()
                     }
                 }
             })
 
+            // Add bottom divider line
             addItemDecoration(DividerItemDecoration(requireContext(), LinearLayout.VERTICAL))
         }
     }

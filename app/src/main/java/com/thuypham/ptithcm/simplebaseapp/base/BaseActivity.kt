@@ -26,9 +26,10 @@ abstract class BaseActivity<T : ViewDataBinding>(private val layoutId: Int) : Ap
 
     protected lateinit var binding: T
     private lateinit var dialog: Dialog
-    private val isHandleNetworkState = true
+    private val isHandleNetworkState = false
     private lateinit var connectivityManager: ConnectivityManager
     private var isShowNoInternetActivity = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, layoutId)

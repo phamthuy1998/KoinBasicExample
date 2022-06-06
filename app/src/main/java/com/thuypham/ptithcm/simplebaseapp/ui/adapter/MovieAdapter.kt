@@ -1,11 +1,13 @@
 package com.thuypham.ptithcm.simplebaseapp.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.thuypham.ptithcm.simplebaseapp.R
 import com.thuypham.ptithcm.simplebaseapp.data.remote.Movie
 import com.thuypham.ptithcm.simplebaseapp.databinding.ItemLoadingBinding
@@ -15,7 +17,7 @@ import com.thuypham.ptithcm.simplebaseapp.ui.adapter.viewholder.ItemLoadingViewH
 
 class MovieAdapter(
     private val onItemClick: ((item: Movie) -> Unit)? = null,
-) : ListAdapter<Movie, RecyclerView.ViewHolder>(DiffCallback()) {
+) : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback()) {
 
     companion object {
         const val VIEW_TYPE_ITEM = 0
@@ -32,6 +34,7 @@ class MovieAdapter(
                 } else {
                     Glide.with(root.context)
                         .load(item.getImagePath())
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                         .placeholder(R.drawable.ic_image_placeholder)
                         .into(ivMovie)
                 }
@@ -48,7 +51,7 @@ class MovieAdapter(
                 val binding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 ItemMovieViewHolder(binding).apply {
                     binding.root.setOnSingleClickListener {
-                        onItemClick?.invoke(currentList[absoluteAdapterPosition])
+                        onItemClick?.invoke(currentList[absoluteAdapterPosition] as Movie)
                     }
                 }
             }
@@ -60,22 +63,23 @@ class MovieAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position) == null) VIEW_TYPE_LOADING else VIEW_TYPE_ITEM
+        return if (getItem(position) is Movie) VIEW_TYPE_ITEM else VIEW_TYPE_LOADING
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-        if (viewHolder is ItemMovieViewHolder && getItem(position) != null) {
-            viewHolder.bind(getItem(position))
+        if (viewHolder is ItemMovieViewHolder) {
+            viewHolder.bind(getItem(position) as Movie)
         } else {
             (viewHolder as ItemLoadingViewHolder).bind()
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<Movie>() {
-        override fun areItemsTheSame(oldItem: Movie, newItem: Movie) =
-            oldItem.id == newItem.id
+    class DiffCallback : DiffUtil.ItemCallback<Any>() {
+        override fun areItemsTheSame(oldItem: Any, newItem: Any) =
+            oldItem.toString() == newItem.toString()
 
-        override fun areContentsTheSame(oldItem: Movie, newItem: Movie) =
+        @SuppressLint("DiffUtilEquals")
+        override fun areContentsTheSame(oldItem: Any, newItem: Any) =
             oldItem == newItem
     }
 }

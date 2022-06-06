@@ -19,6 +19,6 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun bindMovieRepo(authRepositoryImpl: MovieRepositoryImpl): MovieRepository = authRepositoryImpl
+    fun bindMovieRepo(movieRepositoryImpl: MovieRepositoryImpl): MovieRepository = movieRepositoryImpl
 
 }

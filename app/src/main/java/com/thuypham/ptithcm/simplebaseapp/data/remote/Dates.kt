@@ -8,7 +8,7 @@ import android.os.Parcelable
 @Parcelize
 data class Dates(
     @SerializedName("maximum")
-    var maximum: String?,
+    var maximum: String? = null,
     @SerializedName("minimum")
-    var minimum: String?
+    var minimum: String? = null
 ) : Parcelable

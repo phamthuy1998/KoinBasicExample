@@ -35,7 +35,6 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
         setupLogic()
         getData()
         setupView()
-        setupToolbar()
         setupDataObserver()
     }
 
@@ -115,6 +114,7 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
     override fun onResume() {
         super.onResume()
         logD("onResume")
+        setupToolbar()
     }
 
     override fun onPause() {
