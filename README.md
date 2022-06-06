@@ -1,7 +1,8 @@
 # Koin, Hilt basic example
 **Technical**
 - DI: Koin, Hilt(branch migrate_koin_to_hilt)
-- MVVM, LiveData
+- MVVM architecture 
+- LiveData
 - Room
 - Retrofit
 
