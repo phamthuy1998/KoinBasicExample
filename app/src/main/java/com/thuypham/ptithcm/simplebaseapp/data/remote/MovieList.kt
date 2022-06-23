@@ -18,3 +18,12 @@ data class MovieList(
     @SerializedName("total_results")
     var totalResults: Int?
 ) : Parcelable
+
+
+@Parcelize
+data class Dates(
+    @SerializedName("maximum")
+    var maximum: String?,
+    @SerializedName("minimum")
+    var minimum: String?
+) : Parcelable

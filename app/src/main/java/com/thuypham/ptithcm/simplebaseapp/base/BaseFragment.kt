@@ -194,4 +194,9 @@ abstract class BaseFragment<T : ViewDataBinding>(private val layoutId: Int) : Fr
         logD("onDestroy")
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        logD("onDetach")
+
+    }
 }

@@ -1,7 +1,7 @@
 package com.thuypham.ptithcm.simplebaseapp.ui.fragment
 
+import android.content.Intent
 import android.widget.LinearLayout
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,24 +11,22 @@ import com.thuypham.ptithcm.simplebaseapp.data.model.AppException
 import com.thuypham.ptithcm.simplebaseapp.data.model.ResponseHandler
 import com.thuypham.ptithcm.simplebaseapp.data.remote.Movie
 import com.thuypham.ptithcm.simplebaseapp.databinding.FragmentMainBinding
-import com.thuypham.ptithcm.simplebaseapp.domain.usecase.authentication.GetNewTokenUseCase
-import com.thuypham.ptithcm.simplebaseapp.extension.getLoginScope
+import com.thuypham.ptithcm.simplebaseapp.extension.logD
 import com.thuypham.ptithcm.simplebaseapp.extension.logE
 import com.thuypham.ptithcm.simplebaseapp.extension.navigateTo
+import com.thuypham.ptithcm.simplebaseapp.ui.activity.LoginActivity
+import com.thuypham.ptithcm.simplebaseapp.ui.activity.SplashActivity
 import com.thuypham.ptithcm.simplebaseapp.ui.adapter.MovieAdapter
 import com.thuypham.ptithcm.simplebaseapp.ui.dialog.ConfirmDialog
-import com.thuypham.ptithcm.simplebaseapp.viewmodel.LoginViewModel
 import com.thuypham.ptithcm.simplebaseapp.viewmodel.MainViewModel
 import com.thuypham.ptithcm.simplebaseapp.viewmodel.MovieDetailViewModel
-import kotlinx.coroutines.runBlocking
+import com.thuypham.ptithcm.simplebaseapp.viewmodel.SplashViewModel
+import org.koin.android.ext.android.getKoin
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.navigation.koinNavGraphViewModel
-import org.koin.androidx.scope.activityScope
-import org.koin.androidx.scope.fragmentScope
-import org.koin.androidx.scope.lifecycleScope
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.scope.Scope
+import kotlin.math.log
 
 
 class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
@@ -52,6 +50,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     }
 
     override fun getData() {
+        showLoading()
         mainViewModel.getMovieNowPlaying()
     }
 
@@ -60,7 +59,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         super.setupDataObserver()
 
         mainViewModel.movieList.observe(viewLifecycleOwner) {
+            logD("setupDataObserver - submitList movie")
             isMovieListLoadMore = false
+
             movieAdapter.submitList(it)
             movieAdapter.notifyItemChanged(movieItemLoadingPosition)
         }
@@ -88,25 +89,25 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     private fun showErrorDialog(error: ResponseHandler.Failure?) {
         ConfirmDialog(
             title = getString(R.string.dialog_error_title),
-            msg = getString(R.string.dialog_error_msg_time_out)
+            msg = error?.extra ?: getString(R.string.dialog_error_msg_time_out)
         ).show(childFragmentManager, ConfirmDialog.TAG)
     }
 
 
     override fun setupToolbar() {
         setToolbarTitle(getString(R.string.app_name))
-        val isLogin = mainViewModel.isUserLogin()
-        if (!isLogin) {
-            setRightBtn(R.drawable.ic_login_account) {
-                navigateTo(R.id.authentication_graph)
-            }
-        } else {
-            setRightBtn(R.drawable.ic_account_setting) {
-                // Todo: Navigate to account setting fragment
-                navigateTo(R.id.authentication_graph)
-            }
+        setRightBtn(R.drawable.ic_log_out) {
+            mainViewModel.logOut()
+            startLoginActivity()
         }
     }
+
+    private fun startLoginActivity() {
+        val intent = Intent(requireContext(), LoginActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
+    }
+
 
     override fun setupView() {
         // Setup Recyclerview
@@ -119,7 +120,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
                     super.onScrolled(recyclerView, dx, dy)
                     movieItemLoadingPosition = recyclerViewLayoutManager.findLastCompletelyVisibleItemPosition()
                     if (!isMovieListLoadMore && loadMoreAble
-                        && movieItemLoadingPosition == movieAdapter.itemCount - 4
+                        && movieItemLoadingPosition == movieAdapter.itemCount - 7
                     ) {
                         isMovieListLoadMore = true
                         mainViewModel.getMovieNowPlaying()

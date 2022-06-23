@@ -8,7 +8,7 @@ import com.thuypham.ptithcm.simplebaseapp.domain.repository.MovieRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MovieRepositoryImpl(private val movieApi: MovieApi) : MovieRepository {
+class TestMovieRepositoryImpl(private val movieApi: MovieApi) : MovieRepository {
 
     override suspend fun getNowPlaying(page: Int): ResponseHandler<MovieList> {
         return withContext(Dispatchers.IO) { wrapApiCall { movieApi.getNowPlaying(page = page) } }

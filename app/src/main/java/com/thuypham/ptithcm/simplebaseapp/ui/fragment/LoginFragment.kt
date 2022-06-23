@@ -1,32 +1,30 @@
 package com.thuypham.ptithcm.simplebaseapp.ui.fragment
 
+import android.content.Intent
 import androidx.core.widget.doOnTextChanged
 import com.thuypham.ptithcm.simplebaseapp.R
 import com.thuypham.ptithcm.simplebaseapp.base.BaseFragment
 import com.thuypham.ptithcm.simplebaseapp.databinding.FragmentLoginBinding
-import com.thuypham.ptithcm.simplebaseapp.extension.goBack
+import com.thuypham.ptithcm.simplebaseapp.di.LOGIN_SCOPE
 import com.thuypham.ptithcm.simplebaseapp.extension.logD
 import com.thuypham.ptithcm.simplebaseapp.extension.setOnSingleClickListener
+import com.thuypham.ptithcm.simplebaseapp.ui.activity.MainActivity
 import com.thuypham.ptithcm.simplebaseapp.viewmodel.LoginViewModel
+import org.koin.android.ext.android.getKoin
 import org.koin.android.scope.AndroidScopeComponent
-import org.koin.androidx.scope.fragmentScope
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.core.context.stopKoin
 import org.koin.core.scope.Scope
 
 /* For Testing stateViewModel injection */
 class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login), AndroidScopeComponent {
 
-    override  val scope: Scope by fragmentScope()
-
-    // Test State ViewModel
+    override val scope: Scope by lazy { getKoin().getScope(LOGIN_SCOPE) }
     private val loginViewModel: LoginViewModel by stateViewModel()
 
     override fun setupToolbar() {
         super.setupToolbar()
         setToolbarTitle(R.string.login)
-        setLeftBtn(R.drawable.ic_back) {
-            goBack()
-        }
     }
 
     override fun setupView() {
@@ -57,8 +55,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
         }
 
         loginViewModel.loginResponse.observe(viewLifecycleOwner) {
-            goBack()
+            startHomeActivity()
         }
+    }
+
+    private fun startHomeActivity() {
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 
 }
