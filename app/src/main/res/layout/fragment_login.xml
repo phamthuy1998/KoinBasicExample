@@ -25,9 +25,10 @@
                     android:id="@+id/edtUsername"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:autofillHints="password"
                     android:hint="@string/username"
                     android:imeActionLabel="@string/username"
-                    android:importantForAutofill="no"
                     android:inputType="text"
                     android:transitionName="@string/username"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -36,9 +37,11 @@
                     app:layout_constraintWidth_percent="0.9" />
 
                 <EditText
+                    android:layout_marginTop="@dimen/default_margin"
                     android:id="@+id/edtPassword"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:autofillHints="name"
                     android:hint="@string/password"
                     android:imeActionLabel="@string/password"
                     android:importantForAutofill="no"

@@ -3,9 +3,7 @@ package com.thuypham.ptithcm.simplebaseapp.di
 import com.thuypham.ptithcm.simplebaseapp.domain.usecase.authentication.GetNewTokenUseCase
 import com.thuypham.ptithcm.simplebaseapp.domain.usecase.authentication.LoginUseCase
 import com.thuypham.ptithcm.simplebaseapp.domain.usecase.movie.GetNowPlayingUseCase
-import com.thuypham.ptithcm.simplebaseapp.extension.LOGIN_SCOPE
 import com.thuypham.ptithcm.simplebaseapp.extension.getLoginScope
-import com.thuypham.ptithcm.simplebaseapp.ui.fragment.LoginFragment
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -14,7 +12,7 @@ val useCaseModule = module {
 
 
     // Test scope koin
-    scope<LoginFragment> /*(named(LOGIN_SCOPE))*/ {
+    scope(named(LOGIN_SCOPE)) {
         scoped {
             LoginUseCase(getLoginScope().get())
 //            // or

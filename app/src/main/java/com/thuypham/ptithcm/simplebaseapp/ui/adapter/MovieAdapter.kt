@@ -22,7 +22,7 @@ class MovieAdapter(
         const val VIEW_TYPE_LOADING = 1
     }
 
-    private class ItemMovieViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
+     class ItemMovieViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Movie) {
             binding.apply {
                 if (item.posterPath.isNullOrBlank()) {

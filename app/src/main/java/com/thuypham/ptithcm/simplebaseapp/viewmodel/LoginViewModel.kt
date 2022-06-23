@@ -7,14 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.thuypham.ptithcm.simplebaseapp.MainApplication
 import com.thuypham.ptithcm.simplebaseapp.R
 import com.thuypham.ptithcm.simplebaseapp.base.BaseViewModel
-import com.thuypham.ptithcm.simplebaseapp.data.local.IStorage
-import com.thuypham.ptithcm.simplebaseapp.data.local.SharedPreferencesStorage
+import com.thuypham.ptithcm.simplebaseapp.data.IStorage
+import com.thuypham.ptithcm.simplebaseapp.data.SharedPreferencesStorage
 import com.thuypham.ptithcm.simplebaseapp.data.model.LoginParam
 import com.thuypham.ptithcm.simplebaseapp.data.model.ResponseHandler
 import com.thuypham.ptithcm.simplebaseapp.data.remote.LoginResponse
 import com.thuypham.ptithcm.simplebaseapp.domain.usecase.authentication.GetNewTokenUseCase
 import com.thuypham.ptithcm.simplebaseapp.domain.usecase.authentication.LoginUseCase
-import com.thuypham.ptithcm.simplebaseapp.extension.logD
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -88,6 +87,7 @@ class LoginViewModel(
                 if (loginData.success == true) {
                     sharedPrf.setObject(SharedPreferencesStorage.LOGIN_DATA, loginParam) // user & pw
                     sharedPrf.setObject(SharedPreferencesStorage.LOGIN_RESPONSE, loginData)
+                    sharedPrf.setBoolean(SharedPreferencesStorage.IS_USER_LOGIN, true)
                     _loginResponse.value = loginData
                 } else {
                     // Login fail

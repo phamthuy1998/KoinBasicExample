@@ -4,7 +4,7 @@ import com.thuypham.ptithcm.simplebaseapp.data.model.LoginParam
 import com.thuypham.ptithcm.simplebaseapp.data.remote.MovieList
 import com.thuypham.ptithcm.simplebaseapp.data.remote.LoginResponse
 import com.thuypham.ptithcm.simplebaseapp.util.ApiConstant.API_KEY
-import com.thuypham.ptithcm.simplebaseapp.util.StaticObject
+import com.thuypham.ptithcm.simplebaseapp.util.ApiConstant.DEFAULT_LANGUAGE
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -14,7 +14,7 @@ interface MovieApi {
     suspend fun getNowPlaying(
         @Query("page") page: Int = 1,
         @Query("api_key") apiKey: String = API_KEY,
-        @Query("language") language: String = StaticObject.getCurrentLanguage(),
+        @Query("language") language: String = DEFAULT_LANGUAGE,
     ): Response<MovieList>
 
     @GET("authentication/token/new")

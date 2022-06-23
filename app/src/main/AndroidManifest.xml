@@ -18,6 +18,9 @@
             android:name="com.thuypham.ptithcm.simplebaseapp.ui.activity.MainActivity"
             android:exported="true" />
         <activity
+            android:name="com.thuypham.ptithcm.simplebaseapp.ui.activity.LoginActivity"
+            android:exported="true" />
+        <activity
             android:name="com.thuypham.ptithcm.simplebaseapp.ui.activity.NoNetworkActivity"
             android:exported="true" />
         <activity

@@ -1,10 +1,12 @@
 package com.thuypham.ptithcm.simplebaseapp.data
 
 import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
-class SharedPreferencesStorage constructor(context: Context) : IStorage {
+class SharedPreferencesStorage constructor(context: Context,  val gson: Gson) : IStorage {
 
-    private val sharedPreferences = context.getSharedPreferences(
+    val sharedPreferences = context.getSharedPreferences(
         APP_PREF,
         Context.MODE_PRIVATE
     )
@@ -55,13 +57,34 @@ class SharedPreferencesStorage constructor(context: Context) : IStorage {
     override fun getStringSet(key: String) =
         sharedPreferences.getStringSet(key, emptySet()) as Set<String>
 
+
+    override fun setObject(key: String, obj: Any) {
+        setString(key, gson.toJson(obj))
+    }
+
+    override  fun < T : Any> getObject(key: String): T? {
+        val objString = sharedPreferences.getString(key, "")
+        return try {
+            gson.fromJson<T>(objString, object : TypeToken<T>() {}.type)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    override fun clearData(key: String) {
+        sharedPreferences.edit().remove(key).apply()
+    }
+
+    override fun clearAllData() {
+        sharedPreferences.edit().clear().apply()
+    }
+
     companion object {
-        const val APP_PREF = "invoice_maker_pref"
-        const val PREF_UID = "pref_uid"
-        const val PREF_RUN_FIRST_TIME = "pref_run_first_time"
-        const val PREF_CHAT_RESTORE_ID  = "pref_chat_id"
-        const val PREF_PROTOCOL_LIGHT_CONNECTION = "pref_protocol_light_connection"
-        // DEFINE PREFERENCE PARAMS
+        const val APP_PREF = "KOIN_EXAMPLE"
+        const val IS_USER_LOGIN = "IS_USER_LOGIN"
+        const val PREF_CURRENT_LANGUAGE = "current_language"
+        const val LOGIN_DATA = "LOGIN_DATA"
+        const val LOGIN_RESPONSE = "LOGIN_RESPONSE"
     }
 }
 
@@ -76,4 +99,11 @@ interface IStorage {
     fun getLong(key: String, def: Long = -1L): Long
     fun setStringSet(key: String, set: Set<String>)
     fun getStringSet(key: String): Set<String>
+
+
+    fun setObject(key: String, obj: Any)
+    fun <T : Any> getObject(key: String): T?
+
+    fun clearData(key: String)
+    fun clearAllData()
 }

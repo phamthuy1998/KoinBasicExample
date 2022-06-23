@@ -4,12 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.thuypham.ptithcm.simplebaseapp.base.BaseViewModel
-import com.thuypham.ptithcm.simplebaseapp.data.local.IStorage
-import com.thuypham.ptithcm.simplebaseapp.data.local.SharedPreferencesStorage
+import com.thuypham.ptithcm.simplebaseapp.data.IStorage
+import com.thuypham.ptithcm.simplebaseapp.data.SharedPreferencesStorage
 import com.thuypham.ptithcm.simplebaseapp.data.model.ResponseHandler
 import com.thuypham.ptithcm.simplebaseapp.data.remote.Movie
 import com.thuypham.ptithcm.simplebaseapp.domain.usecase.movie.GetNowPlayingUseCase
 import kotlinx.coroutines.launch
+import org.koin.core.context.startKoin
+import org.koin.dsl.koinApplication
 
 class MainViewModel(
     private val getNowPlayingUseCase: GetNowPlayingUseCase,
@@ -25,8 +27,8 @@ class MainViewModel(
     val loadMoreAble: LiveData<Boolean> = _loadMoreAble
 
 
-    private val _isLogin = MutableLiveData<Boolean>()
-    val isLogin: LiveData<Boolean> = _loadMoreAble
+    private val _isLogout = MutableLiveData<Boolean>()
+    val isLogout: LiveData<Boolean> = _isLogout
 
     private var currentPage = 0
 
@@ -71,10 +73,11 @@ class MainViewModel(
     }
 
 
-    fun isUserLogin(): Boolean {
-        val isLogin = sharedPrf.getObject(SharedPreferencesStorage.LOGIN_DATA) != null
-        _isLogin.value = isLogin
-        return isLogin
+    fun logOut() {
+        sharedPrf.clearData(SharedPreferencesStorage.LOGIN_RESPONSE)
+        sharedPrf.clearData(SharedPreferencesStorage.LOGIN_DATA)
+        sharedPrf.setBoolean(SharedPreferencesStorage.IS_USER_LOGIN, false)
+        _isLogout
     }
 
 }

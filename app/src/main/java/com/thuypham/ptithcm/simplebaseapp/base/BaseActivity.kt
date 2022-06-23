@@ -59,13 +59,17 @@ abstract class BaseActivity<T : ViewDataBinding>(private val layoutId: Int) : Ap
 
 
     fun hideLoading() {
-        if (dialog.isShowing) {
-            dialog.dismiss()
+        runOnUiThread {
+            if (dialog.isShowing) {
+                dialog.dismiss()
+            }
         }
     }
 
     fun showLoading() {
-        dialog.show()
+        runOnUiThread {
+            dialog.show()
+        }
     }
 
     fun setLoadingStatus(isLoading: Boolean) {
